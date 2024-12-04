@@ -1,7 +1,7 @@
 import numpy as np
 import re
 
-with open("examples/day3.txt") as f:
+with open("inputs/day3.txt") as f:
     lines = f.readlines()
 
 memory = "".join(lines)
@@ -26,9 +26,26 @@ for m in all_muls:
 
 # Part 2
 ex = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
-ex1 = " don't()_"
 
 do = re.compile(r'do\(\)')
-dont = re.compile(r'(?<!\w)don\'t\(\)')
+dont = re.compile(r"don\'t\(\)")
 
-d1 = dont.match(ex1)
+fixed_memory = ""
+remaining_string = memory
+stop_match = dont.search(remaining_string)
+
+while stop_match is not None:
+    fixed_memory = fixed_memory + remaining_string[:stop_match.start()]
+    remaining_string = remaining_string[stop_match.end():]
+    start_match = do.search(remaining_string)
+    remaining_string = remaining_string[start_match.end():]
+    stop_match = dont.search(remaining_string)
+
+fixed_memory = fixed_memory + remaining_string
+
+all_fixed_muls = mul.findall(fixed_memory)
+
+total = 0
+for m in all_fixed_muls:
+    mul_product = multiply_mul(m)
+    total += mul_product
