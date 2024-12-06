@@ -3,7 +3,6 @@ import numpy as np
 with open("inputs/day5.txt") as f:
     lines = f.readlines()
 
-# Part 1
 class Rule:
     def __init__(self, rule: str):
         self.first = int(rule.split("|")[0])
@@ -46,12 +45,10 @@ class Update:
         ix1, ix2 = rule.get_indices(self)
         self.arr[[ix1, ix2]] = self.arr[[ix2, ix1]]
     
-
-
 rules = [Rule(rule.strip("\n")) for rule in lines if "|" in rule]
 updates = [Update(line.strip("\n").split(","), rules) for line in lines if "," in line]
 
-
+# Part 1
 update_total = 0
 for update in updates:
     for rule in update.rules:
@@ -63,8 +60,6 @@ for update in updates:
     
 
 # Part 2
-
-
 fixed_update_total = 0
 for update in updates:
     i = 0
