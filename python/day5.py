@@ -1,4 +1,5 @@
 import numpy as np
+from time import time
 
 with open("inputs/day5.txt") as f:
     lines = f.readlines()
@@ -49,6 +50,7 @@ rules = [Rule(rule.strip("\n")) for rule in lines if "|" in rule]
 updates = [Update(line.strip("\n").split(","), rules) for line in lines if "," in line]
 
 # Part 1
+t1 = time()
 update_total = 0
 for update in updates:
     for rule in update.rules:
@@ -57,9 +59,15 @@ for update in updates:
             break
     if not update.is_bad():
         update_total += update.middle()
-    
+
+t2 = time()
+td = t2 - t1
+
+print(f"The update total is {update_total}. Calculated in {td}s.")
+
 
 # Part 2
+t1 = time()
 fixed_update_total = 0
 for update in updates:
     i = 0
@@ -78,3 +86,6 @@ for update in updates:
             break
     if update.is_bad():
         fixed_update_total += update.middle()
+t2 = time()
+td = t2 - t1
+print(f"The fixed update total is {fixed_update_total}. Calculated in {td}s.")

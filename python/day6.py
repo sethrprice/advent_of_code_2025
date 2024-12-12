@@ -1,4 +1,5 @@
 import numpy as np
+from time import time
 
 with open("inputs/day6.txt") as f:
     lines = f.readlines()
@@ -50,20 +51,22 @@ def record_route(start, grid):
 
 
 # Part 1
+t1 = time()
 start_tuple = list(np.asarray(grid == "^").nonzero())
 start = tuple(map(lambda a: a.item(), start_tuple))
 
 locations_visited = record_route(start, grid)
 
 n_locations = len({l.location for l in locations_visited})
-
-print(f"The guard visited {n_locations} unique locations.")
+t2 = time()
+td_1 = t2 - t1
 
 
 # Part 2
 start_tuple = list(np.asarray(grid == "^").nonzero())
 start = tuple(map(lambda a: a.item(), start_tuple))
 
+t1 = time()
 loop_points = set()
 start_location = Location(start, (-1, 0))
 for location_i in locations_visited - {start_location}:
@@ -80,10 +83,12 @@ for location_i in locations_visited - {start_location}:
         grid[obstacle_location] = original_value
         continue
     else:
-        print(f"putting obstacle at {obstacle_location}")
         loop_points.add(obstacle_location)
         grid[obstacle_location] = original_value
     
 n_loop_points = len(loop_points)
+t2 = time()
+td_2 = t2 - t1
 
-print(f"There are {n_loop_points} locations that minimise time paradoxes")
+print(f"The guard visited {n_locations} unique locations. Code ran in {td_1:.3f}s.")
+print(f"There are {n_loop_points} locations that minimise time paradoxes. Code ran in {td_2:.2f}s.")
